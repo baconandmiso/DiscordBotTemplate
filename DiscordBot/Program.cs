@@ -13,13 +13,19 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 
 var builder = new HostApplicationBuilder(args);
-builder.Configuration.AddEnvironmentVariables("DiscordBot_");
+
+#if DEBUG
+    builder.Environment.EnvironmentName = Environments.Development; // 開発環境に設定する
+
+    if (builder.Environment.IsDevelopment())
+    {
+        builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true);
+    }
+#endif
 
 var loggerConfig = new LoggerConfiguration()
     .WriteTo.Console()
-#if RELEASE
-    .WriteTo.File($".logs.d/log-{DateTime:Now:yy.MM.dd_HH.mm}.log")
-#endif
+    .WriteTo.File($".logs.d/log-{DateTime.Now:yy.MM.dd_HH.mm}.log")
     .CreateLogger();
 
 builder.Logging.ClearProviders();
