@@ -5,7 +5,7 @@ namespace DiscordBot.Services;
 public class InteractionHandler(DiscordSocketClient client, InteractionService interactions, IServiceProvider services, ILogger<InteractionHandler> logger)
 {
     /// <summary>
-    ///     InteractionService の初期化
+    /// InteractionService の初期化
     /// </summary>
     public async Task InitializeAsync()
     {
@@ -33,9 +33,11 @@ public class InteractionHandler(DiscordSocketClient client, InteractionService i
 
     private Task OnInteractionExecuted(ICommandInfo command, IInteractionContext context, IResult result)
     {
-        logger.LogInformation("[コマンド実行] {UserName}({UserId}), command={ModuleName}.{MethodName}, guild_id={GuildId}, channel_id={ChannelId}", (context.User.GlobalName ?? context.User.Username), context.User.Id, command.Module.Name, command.MethodName, context.Guild?.Id, context.Channel.Id);
         if (!result.IsSuccess)
             _ = Task.Run(() => HandleInteractionExecutedResult(context.Interaction, result));
+
+        logger.LogInformation("[コマンド実行] {UserName}({UserId}), command={ModuleName}.{MethodName}, guild_id={GuildId}, channel_id={ChannelId}", (context.User.GlobalName ?? context.User.Username), context.User.Id, command.Module.Name, command.MethodName, context.Guild?.Id, context.Channel.Id);
+
         return Task.CompletedTask;
     }
 
