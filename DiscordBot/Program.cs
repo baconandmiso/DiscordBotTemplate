@@ -3,7 +3,6 @@ global using Discord.Interactions;
 global using Discord.WebSocket;
 
 global using Microsoft.Extensions.Logging;
-
 using DiscordBot.Services;
 
 using Microsoft.Extensions.Configuration;
